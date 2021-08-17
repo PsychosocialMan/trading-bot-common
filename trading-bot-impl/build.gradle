@@ -30,7 +30,9 @@ configurations {
 
 // Used versions of dependencies
 ext {
-
+    // Source code Main Artifacts version
+    logbackClassicVersion = "1.2.3"
+    slf4jApiVersion = "1.7.30"
     // Versions used in tests
     testNgVersion = "7.4.0"
 }
@@ -46,6 +48,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     // Configure annotation processor for Spring application.yaml properties
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    // Logging
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: "$logbackClassicVersion"
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: "$slf4jApiVersion"
+
 
     // ----- Test dependencies
 
@@ -77,3 +83,11 @@ jacocoTestReport {
     }
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+bootJar{
+    enabled = false
+}
