@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+// Zero to avg and vice versa
 @Service
 public class SwitchPredictor extends AbstractPredictor {
     @Override
