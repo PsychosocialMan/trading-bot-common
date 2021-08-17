@@ -41,16 +41,20 @@ public class SmartBidderService implements BidderService {
     @Override
     public int predictNextBid() {
         if (bids.isEmpty()) {
+            logger.debug("predictNextBid() - Previous bids not found. Generating first bid.");
             return generateFirstBid();
         }
         var predictedOpponentBet = predictOpponentLogic();
 
         if (predictedOpponentBet.isEmpty()) {
+            logger.debug("predictNextBid() - Opponent's logic cannot be understood. Generating bid.");
             return generateBid();
         }
         if (predictedOpponentBet.get() + 1 > remainingCash) {
+            logger.debug("predictNextBid() - Opponent's logic was understood. But we don't have MU to beat him. Bid 0.");
             return 0;
         } else {
+            logger.debug("predictNextBid() - Opponent's logic was understood. Increasing his bid up to 10%.");
             return predictedOpponentBet.get() + approxUtil.approx(initialQuantity, initialCash, 10);
         }
     }
@@ -80,6 +84,7 @@ public class SmartBidderService implements BidderService {
         this.initialCash = cash;
 
         this.generateBidAlgorithm = new GenerateBidAlgorithm(bids, quantity);
+        logger.info("init() - Service was successfully initialized.");
     }
 
     @Override
@@ -105,11 +110,14 @@ public class SmartBidderService implements BidderService {
     }
 
     private int generateFirstBid() {
-        return 2 * initialCash / initialQuantity + approxUtil.approx(
+        var firstBid = 2 * initialCash / initialQuantity + approxUtil.approx(
                 initialQuantity,
                 initialCash,
                 approxUtil.getRandomApproxPercents()
         );
+
+        logger.debug("generateFirstBid() - First big generated: [{}]", firstBid);
+        return firstBid;
     }
 
     private int generateBid() {
