@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+group 'de.energy.optimax'
+version '1.0.0-RC'
+
+repositories {
+    mavenCentral()
+}

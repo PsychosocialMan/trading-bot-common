@@ -1,0 +1,79 @@
+// Implementation of the Bidder API
+
+plugins {
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'jacoco'
+}
+
+group 'de.energy.optimax'
+version '1.0.0-RC'
+sourceCompatibility = '11'
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+// Use Maven Central repository to get and publish artifacts.
+repositories {
+    mavenCentral()
+}
+
+// To map properties from application.yaml to classes and easily fall into property's definition
+// we have to use annotation processors.
+// And we can customize the sequence of execution of the gradle tasks.
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+// Used versions of dependencies
+ext {
+
+    // Versions used in tests
+    testNgVersion = "7.4.0"
+}
+
+// Project Dependencies
+dependencies {
+
+    // ----- Project source code dependencies
+
+    // Get API module to implement
+    implementation project(":trading-bot-api")
+    // Easily get all Spring dependencies
+    implementation 'org.springframework.boot:spring-boot-starter'
+    // Configure annotation processor for Spring application.yaml properties
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // ----- Test dependencies
+
+    // Use this dependency for SpringBootTests. We will use TestNG instead of JUnit.
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+    // Use TestNG
+    testImplementation group: 'org.testng', name: 'testng', version: "$testNgVersion"
+}
+
+test {
+    // Using TestNG in test stage
+    useTestNG()
+    description = 'Runs the TestNG tests'
+    // Using Jacoco test report to count code coverage by tests.
+    finalizedBy jacocoTestReport
+}
+
+// Counting code coverage by tests.
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+        html.enabled true
+        csv.enabled false
+        xml.destination file("${buildDir}/reports/jacoco/xml/jacocoTestReport.xml")
+        html.destination file("${buildDir}/reports/jacoco/html")
+    }
+}
+

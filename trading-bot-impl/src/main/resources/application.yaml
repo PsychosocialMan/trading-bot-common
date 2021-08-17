@@ -1,0 +1,4 @@
+---
+# Chose type of bidder for more efficiency
+bidder:
+  type: DUMMY
