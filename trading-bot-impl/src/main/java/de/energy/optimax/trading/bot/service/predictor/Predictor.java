@@ -4,6 +4,7 @@ import de.energy.optimax.trading.bot.data.BidRound;
 
 import java.util.Optional;
 
+// You can implement another predictor and add it to the context.
 public interface Predictor {
 
     boolean canPredict();

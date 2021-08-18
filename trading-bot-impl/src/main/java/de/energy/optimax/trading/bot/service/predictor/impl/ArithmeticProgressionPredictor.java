@@ -16,7 +16,7 @@ public class ArithmeticProgressionPredictor extends AbstractPredictor {
         logger.debug("predict() - Trying to predict Arithmetic Progression bids.");
 
         Optional<Integer> result = Optional.empty();
-        if (statistic.size() >= properties.getMinimalValuesForAnalysis()) {
+        if (checkPredictionAnalysis()) {
 
             var opponentDeltaStream = getOpponentDeltaStream();
             var avgGrowth = opponentDeltaStream.collect(Collectors.summarizingInt(value -> value)).getAverage();
@@ -30,8 +30,7 @@ public class ArithmeticProgressionPredictor extends AbstractPredictor {
             lastPredictedValue = result;
         }
 
-        result.ifPresentOrElse(resultValue -> logger.debug("predict() - Predict is successful. Offered bid value: [{}]", resultValue),
-                () -> logger.debug("predict() - Predict is unsuccessful."));
+        logPrediction(result);
 
         return result;
     }

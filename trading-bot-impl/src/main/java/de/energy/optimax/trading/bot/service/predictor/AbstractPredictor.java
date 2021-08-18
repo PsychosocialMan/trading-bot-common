@@ -57,5 +57,12 @@ public abstract class AbstractPredictor implements Predictor {
         }
     }
 
+    protected boolean checkPredictionAnalysis() {
+        return statistic.size() >= properties.getMinimalValuesForAnalysis();
+    }
 
+    protected void logPrediction(Optional<Integer> prediction) {
+        prediction.ifPresentOrElse(resultValue -> logger.debug("predict() - Predict is successful. Offered bid value: [{}]", resultValue),
+                () -> logger.debug("predict() - Predict is unsuccessful."));
+    }
 }

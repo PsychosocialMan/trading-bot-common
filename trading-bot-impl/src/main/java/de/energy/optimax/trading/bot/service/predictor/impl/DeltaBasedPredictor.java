@@ -14,7 +14,7 @@ public class DeltaBasedPredictor extends AbstractPredictor {
         logger.debug("predict() - Trying to predict Delta based algorithm (delta between our and opponent bids) bids.");
 
         Optional<Integer> result = Optional.empty();
-        if (statistic.size() >= properties.getMinimalValuesForAnalysis()) {
+        if (checkPredictionAnalysis()) {
 
             var descendingIterator = statistic.descendingIterator();
 
@@ -43,8 +43,7 @@ public class DeltaBasedPredictor extends AbstractPredictor {
             lastPredictedValue = result;
         }
 
-        result.ifPresentOrElse(resultValue -> logger.debug("predict() - Predict is successful. Offered bid value: [{}]", resultValue),
-                () -> logger.debug("predict() - Predict is unsuccessful."));
+        logPrediction(result);
 
         return result;
     }

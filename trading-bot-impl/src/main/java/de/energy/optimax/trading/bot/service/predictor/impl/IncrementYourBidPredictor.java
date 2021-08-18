@@ -10,6 +10,31 @@ public class IncrementYourBidPredictor extends AbstractPredictor {
 
     @Override
     public Optional<Integer> predict() {
-        return Optional.empty();
+        logger.debug("predict() - Trying to predict Increment-our-bid algorithm bids.");
+
+        Optional<Integer> result = Optional.empty();
+        if (checkPredictionAnalysis()) {
+
+            var descendingIterator = statistic.descendingIterator();
+            var previousRound = descendingIterator.next();
+
+            var criteria = true;
+
+            while (descendingIterator.hasNext()) {
+                criteria &= Math.abs(previousRound.getOpponentBid() - descendingIterator.next().getYourBid() - 1) < properties.getAccuracy();
+            }
+
+            if (criteria) {
+                result = Optional.of(statistic.getLast().getYourBid() + 1);
+            }
+
+            checkPrediction();
+
+            lastPredictedValue = result;
+        }
+
+        logPrediction(result);
+
+        return result;
     }
 }
