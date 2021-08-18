@@ -9,11 +9,15 @@ public class ApproxUtil {
     }
 
     public int approx(int quantity, int cash, int percentsToApprox) {
-        return 2 * cash / quantity * percentsToApprox / 100;
+        return divideAndCeil(divideAndCeil(2 * cash, quantity) * percentsToApprox, 100);
     }
 
     public int getRandomApproxPercents() {
         return new SecureRandom().nextInt(20);
+    }
+
+    public int divideAndCeil(int first, int second) {
+        return (int) Math.ceil(first / (double) second);
     }
 
 }

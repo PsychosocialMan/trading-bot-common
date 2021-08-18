@@ -7,10 +7,6 @@ import java.util.Optional;
 
 @Service
 public class IncrementYourBidPredictor extends AbstractPredictor {
-    @Override
-    public boolean canPredict() {
-        return false;
-    }
 
     @Override
     public Optional<Integer> predict() {

@@ -15,11 +15,13 @@ public class GenerateBidAlgorithm {
     private final List<BidRound> bidRounds;
     private final int initialQuantity;
     private final int initialCash;
+    private final ApproxUtil approxUtil;
 
     public GenerateBidAlgorithm(List<BidRound> bidRounds, int initialQuantity, int initialCash) {
         this.bidRounds = bidRounds;
         this.initialQuantity = initialQuantity;
         this.initialCash = initialCash;
+        this.approxUtil = new ApproxUtil();
     }
 
     public int generateBid(int remainingCash,
@@ -29,13 +31,18 @@ public class GenerateBidAlgorithm {
         var quantityToDraw = initialQuantity / 2 - wonQuantity;
         var opponentQuantityToDraw = initialQuantity / 2 - (initialQuantity - wonQuantity);
 
-        // No risk
-        if (quantityToDraw <= 0) {
+        // We won
+        if (quantityToDraw < 0 && remainingQuantity + quantityToDraw <= 0) {
             return 0;
         }
 
+        // Separate cash between other bids.
+        if (quantityToDraw == 0) {
+            return approxUtil.divideAndCeil(remainingCash, (remainingQuantity / 2 + 1));
+        }
+
         if (remainingQuantity - quantityToDraw <= 0) {
-            return remainingOpponentCash / opponentQuantityToDraw + 1;
+            return approxUtil.divideAndCeil(remainingOpponentCash, opponentQuantityToDraw) + 1;
         } else {
             var avgBid = generateAvgBid() + middleDelta();
             return remainingCash - avgBid >= 0 ? avgBid : remainingCash;
@@ -44,9 +51,8 @@ public class GenerateBidAlgorithm {
     }
 
     public int generateAvgBid() {
-        var approxUtil = new ApproxUtil();
 
-        var avgBid = 2 * initialCash / initialQuantity + approxUtil.approx(
+        var avgBid = approxUtil.divideAndCeil(2 * initialCash, initialQuantity) + approxUtil.approx(
                 initialQuantity,
                 initialCash,
                 approxUtil.getRandomApproxPercents()

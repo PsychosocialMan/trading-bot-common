@@ -112,7 +112,7 @@ public class SmartBidderService implements BidderService {
     }
 
     private Optional<Integer> predictOpponentLogic() {
-        var intSummaryStatistic = predictors.stream()
+        var intSummaryStatistic = predictors.parallelStream()
                 .filter(Predictor::canPredict)
                 .map(Predictor::predict)
                 .filter(Optional::isPresent)
@@ -127,9 +127,11 @@ public class SmartBidderService implements BidderService {
     }
 
     private int generateBid() {
-        return generateBidAlgorithm.generateBid(remainingCash,
+        var generatedBid = generateBidAlgorithm.generateBid(remainingCash,
                 remainingOpponentCash,
                 remainingQuantity,
                 quantityCounter);
+        logger.debug("generateBid() - Generated bid: [{}]", generatedBid);
+        return generatedBid;
     }
 }

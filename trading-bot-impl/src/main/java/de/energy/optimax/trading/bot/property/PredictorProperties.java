@@ -2,15 +2,18 @@ package de.energy.optimax.trading.bot.property;
 
 public class PredictorProperties {
 
-    private int retries = 5;
-    private int accuracy = 10;
+    private int successfulPredictionCountCriteria = 3;
+    private int minimalValuesForAnalysis = 5;
 
-    public int getRetries() {
-        return retries;
+    // in QU
+    private int accuracy = 1;
+
+    public int getSuccessfulPredictionCountCriteria() {
+        return successfulPredictionCountCriteria;
     }
 
-    public void setRetries(int retries) {
-        this.retries = retries;
+    public void setSuccessfulPredictionCountCriteria(int successfulPredictionCountCriteria) {
+        this.successfulPredictionCountCriteria = successfulPredictionCountCriteria;
     }
 
     public int getAccuracy() {
@@ -21,10 +24,18 @@ public class PredictorProperties {
         this.accuracy = accuracy;
     }
 
+    public int getMinimalValuesForAnalysis() {
+        return minimalValuesForAnalysis;
+    }
+
+    public void setMinimalValuesForAnalysis(int minimalValuesForAnalysis) {
+        this.minimalValuesForAnalysis = minimalValuesForAnalysis;
+    }
+
     @Override
     public String toString() {
         return "PredictorProperties{" +
-                "retries=" + retries +
+                "retries=" + successfulPredictionCountCriteria +
                 ", accuracy=" + accuracy +
                 '}';
     }

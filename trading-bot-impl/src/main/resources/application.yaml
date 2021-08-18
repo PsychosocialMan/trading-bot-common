@@ -2,5 +2,6 @@
 # Chose type of bidder for more efficiency
 bidder:
   predictor:
-    retries: 3
-    accuracy: 10
+    minimal-values-for-analysis: 3
+    successful-prediction-count-criteria: 2
+    accuracy: 1

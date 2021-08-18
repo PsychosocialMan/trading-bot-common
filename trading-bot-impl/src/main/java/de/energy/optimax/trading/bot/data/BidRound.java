@@ -8,8 +8,8 @@ public class BidRound {
     private final int opponentBid;
     public final Status bidStatus;
 
-    public final int delta;
-    public final int profit;
+    private final int delta;
+    private final int profit;
 
     public BidRound(int yourBid, int opponentBid) {
         this.yourBid = yourBid;
@@ -50,7 +50,7 @@ public class BidRound {
         return profit;
     }
 
-    enum Status {
+    public enum Status {
         WON, LOST, DRAW
     }
 
