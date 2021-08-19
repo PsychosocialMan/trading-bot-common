@@ -9,6 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The type Delta based predictor. Algorithm is based on delta between our and opponent bids.
+ *
+ * <ol>
+ *     <li>If he won last round, he will decrease his last bid with half of a delta between our bids</li>
+ *     <li>If it was draw or opponent lost, he will increase our last bid with delta between our bids</li>
+ * </ol>
+ *
+ * @author Smirnov Kirill
+ */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DeltaBasedPredictor extends AbstractPredictor {
@@ -28,13 +38,13 @@ public class DeltaBasedPredictor extends AbstractPredictor {
             var criteria = true;
 
             while (descendingIterator.hasNext()) {
-                // If he won, he increase our bid with delta.
+                // If he won, he decrease his bid with half of a delta.
                 var ifOpponentWonCondition = roundBeforeLast.getBidStatus() == BidRound.Status.LOST &&
                         lastRound.getOpponentBid() - (
                                 roundBeforeLast.getOpponentBid() - Math.abs(new ApproxUtil().divideAndCeil(roundBeforeLast.getDelta(), 2))
                         ) <= properties.getAccuracy();
 
-                // If he lost, he increase his bid with delta.
+                // If he lost, he increase our bid with delta.
                 var ifOpponentLostCondition = (roundBeforeLast.getBidStatus() == BidRound.Status.WON || roundBeforeLast.getBidStatus() == BidRound.Status.DRAW) &&
                         lastRound.getOpponentBid() - (roundBeforeLast.getYourBid() + roundBeforeLast.getDelta()) <= properties.getAccuracy();
 
@@ -43,6 +53,7 @@ public class DeltaBasedPredictor extends AbstractPredictor {
                 lastRound = roundBeforeLast;
                 roundBeforeLast = descendingIterator.next();
             }
+            // If success we can predict his next move.
             if (criteria) {
                 lastRound = statistic.getLast();
                 if (lastRound.getBidStatus() == BidRound.Status.LOST) {

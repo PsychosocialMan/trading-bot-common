@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * Smart bidder service. Main application service.
- * <p>
+ *
  * <p>
  * The work algorithm is as follows:
  *     <ol>

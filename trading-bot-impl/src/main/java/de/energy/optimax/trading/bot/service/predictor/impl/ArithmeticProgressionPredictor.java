@@ -10,6 +10,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * The type Arithmetic progression predictor. Checks if our opponent increase his bids with the same value (with
+ * accuracy).
+ *
+ * @author Smirnov Kirill
+ */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ArithmeticProgressionPredictor extends AbstractPredictor {
@@ -21,10 +27,14 @@ public class ArithmeticProgressionPredictor extends AbstractPredictor {
         Optional<Integer> result = Optional.empty();
         if (checkPredictionAnalysis()) {
 
+            // Get opponent deltas between his bids.
             var opponentDeltaStream = getOpponentDeltaStream();
+            // Calculating average delta.
             var avgGrowth = opponentDeltaStream.collect(Collectors.summarizingInt(value -> value)).getAverage();
+            // Check if all the deltas has deviation from avg with accuracy.
             var criteria = deviationCriteria(avgGrowth, getOpponentDeltaStream());
 
+            // If yes, just increase his last bid with the average delta.
             if (criteria) {
                 result = Optional.of(statistic.getLast().getOpponentBid() + (int) Math.ceil(avgGrowth));
             }
@@ -39,6 +49,11 @@ public class ArithmeticProgressionPredictor extends AbstractPredictor {
     }
 
 
+    /**
+     * Gets opponent delta stream.
+     *
+     * @return the opponent delta stream
+     */
     private Stream<Integer> getOpponentDeltaStream() {
         var streamBuilder = IntStream.builder();
 

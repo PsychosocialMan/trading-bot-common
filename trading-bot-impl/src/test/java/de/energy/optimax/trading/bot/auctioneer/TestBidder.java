@@ -11,13 +11,39 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 
+/**
+ * The type Test bidder. Gets his bids from mapping json.
+ * <p>
+ * See src/test/resources/bidders
+ *
+ * @author Smirnov Kirill
+ */
 public class TestBidder implements Bidder {
 
+    /**
+     * The Mapping.
+     */
     private final Mapping mapping;
+    /**
+     * The Rounds.
+     */
     private final LinkedList<BidRound> rounds = new LinkedList<>();
+    /**
+     * The Index counter.
+     */
     private int indexCounter = 0;
+    /**
+     * The Cash counter.
+     */
     private int cashCounter;
 
+    /**
+     * Instantiates a new Test bidder.
+     *
+     * @param filePath the file path
+     *
+     * @throws IOException the io exception
+     */
     public TestBidder(Path filePath) throws IOException {
         this.mapping = fileToMapping(filePath);
         this.cashCounter = getInitialCash();
@@ -66,14 +92,33 @@ public class TestBidder implements Bidder {
         rounds.add(new BidRound(own, other));
     }
 
+    /**
+     * File to mapping mapping.
+     *
+     * @param filePath the file path
+     *
+     * @return the mapping
+     *
+     * @throws IOException the io exception
+     */
     private Mapping fileToMapping(Path filePath) throws IOException {
         return new Gson().fromJson(Files.readString(filePath), Mapping.class);
     }
 
+    /**
+     * Gets initial quantity.
+     *
+     * @return the initial quantity
+     */
     public int getInitialQuantity() {
         return this.mapping.getInitialQuantity();
     }
 
+    /**
+     * Gets initial cash.
+     *
+     * @return the initial cash
+     */
     public int getInitialCash() {
         return Objects.requireNonNull(this.mapping).getInitialCash();
     }

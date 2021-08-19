@@ -12,7 +12,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * The type Abstract predictor. Implements all the methods except <code>predict()</code>.
+ * The type Abstract predictor. Implements all the methods except <code>predict()</code>. All the inherited classes are
+ * prototypes in case of variables conflict (if new Bidder implementation will use them).
  *
  * @author Smirnov Kirill
  */
