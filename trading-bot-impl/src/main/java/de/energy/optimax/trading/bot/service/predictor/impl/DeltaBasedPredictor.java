@@ -3,11 +3,14 @@ package de.energy.optimax.trading.bot.service.predictor.impl;
 import de.energy.optimax.trading.bot.data.BidRound;
 import de.energy.optimax.trading.bot.service.predictor.AbstractPredictor;
 import de.energy.optimax.trading.bot.util.ApproxUtil;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DeltaBasedPredictor extends AbstractPredictor {
 
     @Override

@@ -1,16 +1,11 @@
 package de.energy.optimax.trading.bot.util;
 
 import de.energy.optimax.trading.bot.data.BidRound;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GenerateBidAlgorithm {
-
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final List<BidRound> bidRounds;
     private final int initialQuantity;
@@ -69,15 +64,11 @@ public class GenerateBidAlgorithm {
 
     public int generateAvgBid() {
 
-        var avgBid = approxUtil.divideAndCeil(2 * initialCash, initialQuantity) + approxUtil.approx(
+        return approxUtil.divideAndCeil(2 * initialCash, initialQuantity) + approxUtil.approx(
                 initialQuantity,
                 initialCash,
                 approxUtil.getRandomApproxPercents()
         );
-
-        logger.debug("generateFirstBid() - First big generated: [{}]", avgBid);
-
-        return avgBid;
     }
 
     private int middleDelta() {

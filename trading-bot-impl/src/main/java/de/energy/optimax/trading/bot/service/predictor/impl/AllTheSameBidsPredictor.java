@@ -2,12 +2,15 @@ package de.energy.optimax.trading.bot.service.predictor.impl;
 
 import de.energy.optimax.trading.bot.data.BidRound;
 import de.energy.optimax.trading.bot.service.predictor.AbstractPredictor;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AllTheSameBidsPredictor extends AbstractPredictor {
 
     @Override

@@ -62,6 +62,7 @@ dependencies {
     }
     // Use TestNG
     testImplementation group: 'org.testng', name: 'testng', version: "$testNgVersion"
+    // And use Gson for JSON transformation to objects in tests
     testImplementation group: 'com.google.code.gson', name: 'gson', version: "$gsonVersion"
 
 }
@@ -81,16 +82,21 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
         csv.enabled false
+        // You can use this file to provide it to Sonar or other system
         xml.destination file("${buildDir}/reports/jacoco/xml/jacocoTestReport.xml")
+        // You can review code coverage in this folder
         html.destination file("${buildDir}/reports/jacoco/html")
     }
 }
 
 java {
+    // Using sources packaging
     withSourcesJar()
+    // And also we are exporting javadocs
     withJavadocJar()
 }
 
 bootJar{
+    // Because there is no main class and project is used like a library, there is no need to boot jar.
     enabled = false
 }

@@ -2,7 +2,9 @@ package de.energy.optimax.trading.bot.auctioneer;
 
 import auction.Bidder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.test.context.TestComponent;
+import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
 
 @TestComponent
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Auctioneer {
 
     private final Bidder bidder;
@@ -44,7 +47,8 @@ public class Auctioneer {
     }
 
     public boolean isOurBidderWon() {
-        return bidderQuantity > testBidderQuantity || (bidderQuantity == testBidderQuantity && bidderCash > testBidderCash);
+        return bidderQuantity > testBidderQuantity ||
+                (bidderQuantity == testBidderQuantity && bidderCash >= testBidderCash);
     }
 
     public void play() {

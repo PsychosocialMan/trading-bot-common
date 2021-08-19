@@ -1,6 +1,8 @@
 package de.energy.optimax.trading.bot.service.predictor.impl;
 
 import de.energy.optimax.trading.bot.service.predictor.AbstractPredictor;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -9,6 +11,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ArithmeticProgressionPredictor extends AbstractPredictor {
 
     @Override

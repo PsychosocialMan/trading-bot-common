@@ -1,3 +1,5 @@
+// Common dependency for aggregation API and implementation.
+
 plugins {
     id 'java'
 }
