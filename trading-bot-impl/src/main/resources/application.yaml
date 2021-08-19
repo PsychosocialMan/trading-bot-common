@@ -1,4 +1,7 @@
 ---
 # Chose type of bidder for more efficiency
 bidder:
-  type: DUMMY
+  predictor:
+    minimal-values-for-analysis: 3
+    successful-prediction-count-criteria: 2
+    accuracy: 1

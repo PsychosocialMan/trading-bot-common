@@ -1,0 +1,10 @@
+{
+  "initialQuantity": 2,
+  "initialCash": 90,
+  "stages": [
+    {
+      "type": "SIMPLE_BID",
+      "value": 89
+    }
+  ]
+}
