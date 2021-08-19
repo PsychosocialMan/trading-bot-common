@@ -8,7 +8,7 @@ public class TradingBotFactory {
     }
 
     public static Bidder getBidder() {
-        return new AnnotationConfigApplicationContext()
+        return new AnnotationConfigApplicationContext(TradingBotConfiguration.class)
                 .getBean(Bidder.class);
     }
 }

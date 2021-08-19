@@ -1,0 +1,46 @@
+{
+  "initialQuantity": 20,
+  "initialCash": 70,
+  "stages": [
+    {
+      "type": "SIMPLE_BID",
+      "value": 7
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    },
+    {
+      "type": "ADD_TO_YOUR_LAST_BID",
+      "value": 1
+    }
+  ]
+}
