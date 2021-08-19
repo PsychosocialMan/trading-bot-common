@@ -77,6 +77,7 @@ public class Auctioneer {
             }
 
             bidder.bids(bidderBid, testBidderBid);
+            testBidder.bids(testBidderBid, bidderBid);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

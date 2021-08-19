@@ -4,7 +4,7 @@
   "stages": [
     {
       "type": "SIMPLE_BID",
-      "value": 7
+      "value": 5
     },
     {
       "type": "ADD_TO_HIS_LAST_BID",

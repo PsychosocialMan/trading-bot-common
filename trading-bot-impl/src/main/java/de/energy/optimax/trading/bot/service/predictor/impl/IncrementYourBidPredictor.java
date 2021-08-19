@@ -21,7 +21,9 @@ public class IncrementYourBidPredictor extends AbstractPredictor {
             var criteria = true;
 
             while (descendingIterator.hasNext()) {
-                criteria &= Math.abs(previousRound.getOpponentBid() - descendingIterator.next().getYourBid() - 1) < properties.getAccuracy();
+                var roundBeforeLast = descendingIterator.next();
+                criteria &= Math.abs(previousRound.getOpponentBid() - roundBeforeLast.getYourBid() - 1) < properties.getAccuracy();
+                previousRound = roundBeforeLast;
             }
 
             if (criteria) {

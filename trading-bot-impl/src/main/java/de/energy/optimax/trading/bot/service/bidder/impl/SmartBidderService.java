@@ -58,15 +58,18 @@ public class SmartBidderService implements BidderService {
             logger.debug("predictNextBidWithoutCashAnalyze() - Opponent's logic cannot be understood. Generating bid.");
             return generateBid();
         }
-        if (predictedOpponentBet.get() < remainingOpponentCash) {
+        if (predictedOpponentBet.get() >= remainingOpponentCash) {
             return remainingOpponentCash + 1;
         }
-        if (predictedOpponentBet.get() + 1 > remainingCash) {
+
+        var incrementAccuracy = approxUtil.approx(initialQuantity, initialCash, 10);
+
+        if (predictedOpponentBet.get() + incrementAccuracy > remainingCash) {
             logger.debug("predictNextBidWithoutCashAnalyze() - Opponent's logic was understood. But we don't have MU to beat him. Bid 0.");
             return 0;
         } else {
             logger.debug("predictNextBidWithoutCashAnalyze() - Opponent's logic was understood. Increasing his bid up to 10%.");
-            return predictedOpponentBet.get() + approxUtil.approx(initialQuantity, initialCash, 10);
+            return predictedOpponentBet.get() + incrementAccuracy;
         }
     }
 
@@ -98,6 +101,7 @@ public class SmartBidderService implements BidderService {
         this.remainingOpponentCash = cash;
 
         this.generateBidAlgorithm = new GenerateBidAlgorithm(bids, quantity, cash);
+        this.predictors.forEach(Predictor::clear);
         logger.info("init() - Service was successfully initialized.");
     }
 
@@ -113,6 +117,7 @@ public class SmartBidderService implements BidderService {
 
     private Optional<Integer> predictOpponentLogic() {
         var intSummaryStatistic = predictors.parallelStream()
+                .filter(predictor -> predictor.predict().isPresent())
                 .filter(Predictor::canPredict)
                 .map(Predictor::predict)
                 .filter(Optional::isPresent)

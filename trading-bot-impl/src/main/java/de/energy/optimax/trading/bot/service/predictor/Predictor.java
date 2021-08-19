@@ -12,4 +12,6 @@ public interface Predictor {
     Optional<Integer> predict();
 
     void addBidInfo(BidRound round);
+
+    void clear();
 }

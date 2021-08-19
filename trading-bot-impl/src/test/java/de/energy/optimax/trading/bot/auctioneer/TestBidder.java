@@ -16,10 +16,11 @@ public class TestBidder implements Bidder {
     private final Mapping mapping;
     private final LinkedList<BidRound> rounds = new LinkedList<>();
     private int indexCounter = 0;
-    private int cashCounter = getInitialCash();
+    private int cashCounter;
 
     public TestBidder(Path filePath) throws IOException {
         this.mapping = fileToMapping(filePath);
+        this.cashCounter = getInitialCash();
     }
 
     @Override
@@ -52,7 +53,7 @@ public class TestBidder implements Bidder {
             default:
                 throw new UnsupportedOperationException("Type is not recognized");
         }
-        if (bidValue <= cashCounter) {
+        if (bidValue >= cashCounter) {
             bidValue = cashCounter;
         }
         cashCounter -= bidValue;

@@ -2,6 +2,7 @@ package de.energy.optimax.trading.bot.service.predictor.impl;
 
 import de.energy.optimax.trading.bot.data.BidRound;
 import de.energy.optimax.trading.bot.service.predictor.AbstractPredictor;
+import de.energy.optimax.trading.bot.util.ApproxUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,21 +22,33 @@ public class DeltaBasedPredictor extends AbstractPredictor {
             var lastRound = descendingIterator.next();
             var roundBeforeLast = descendingIterator.next();
 
-            // If he won, he increase our bid with delta.
-            var ifOpponentWonCondition = roundBeforeLast.getBidStatus() == BidRound.Status.LOST &&
-                    lastRound.getOpponentBid() - (roundBeforeLast.getYourBid() - roundBeforeLast.getDelta()) < properties.getAccuracy();
+            var criteria = true;
 
-            // If he lost, he increase his bid with delta.
-            var ifOpponentLostCondition = (roundBeforeLast.getBidStatus() == BidRound.Status.WON || roundBeforeLast.getBidStatus() == BidRound.Status.DRAW) &&
-                    lastRound.getOpponentBid() - (roundBeforeLast.getOpponentBid() + roundBeforeLast.getDelta()) < properties.getAccuracy();
+            while (descendingIterator.hasNext()) {
+                // If he won, he increase our bid with delta.
+                var ifOpponentWonCondition = roundBeforeLast.getBidStatus() == BidRound.Status.LOST &&
+                        lastRound.getOpponentBid() - (
+                                roundBeforeLast.getOpponentBid() - Math.abs(new ApproxUtil().divideAndCeil(roundBeforeLast.getDelta(), 2))
+                        ) <= properties.getAccuracy();
 
-            var criteria = ifOpponentLostCondition || ifOpponentWonCondition;
+                // If he lost, he increase his bid with delta.
+                var ifOpponentLostCondition = (roundBeforeLast.getBidStatus() == BidRound.Status.WON || roundBeforeLast.getBidStatus() == BidRound.Status.DRAW) &&
+                        lastRound.getOpponentBid() - (roundBeforeLast.getYourBid() + roundBeforeLast.getDelta()) <= properties.getAccuracy();
 
+                criteria &= ifOpponentLostCondition || ifOpponentWonCondition;
+
+                lastRound = roundBeforeLast;
+                roundBeforeLast = descendingIterator.next();
+            }
             if (criteria) {
+                lastRound = statistic.getLast();
                 if (lastRound.getBidStatus() == BidRound.Status.LOST) {
-                    result = Optional.of(lastRound.getYourBid() - lastRound.getDelta());
+                    result = Optional.of(
+                            lastRound.getOpponentBid() -
+                                    new ApproxUtil().divideAndCeil(Math.abs(lastRound.getDelta()), 2)
+                    );
                 } else {
-                    result = Optional.of(lastRound.getOpponentBid() + lastRound.getDelta());
+                    result = Optional.of(lastRound.getYourBid() + lastRound.getDelta());
                 }
             }
             checkPrediction();

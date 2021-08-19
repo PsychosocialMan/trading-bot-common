@@ -20,10 +20,10 @@ public class ArithmeticProgressionPredictor extends AbstractPredictor {
 
             var opponentDeltaStream = getOpponentDeltaStream();
             var avgGrowth = opponentDeltaStream.collect(Collectors.summarizingInt(value -> value)).getAverage();
-            var criteria = deviationCriteria(avgGrowth, opponentDeltaStream);
+            var criteria = deviationCriteria(avgGrowth, getOpponentDeltaStream());
 
             if (criteria) {
-                result = Optional.of(statistic.getLast().getOpponentBid() + (int) avgGrowth);
+                result = Optional.of(statistic.getLast().getOpponentBid() + (int) Math.ceil(avgGrowth));
             }
             checkPrediction();
 

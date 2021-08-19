@@ -13,8 +13,13 @@ public class ApproxUtil {
     }
 
     public int getRandomApproxPercents() {
-        return new SecureRandom().nextInt(20);
+        return getRandomApproxPercents(20);
     }
+
+    public int getRandomApproxPercents(int percentsBound) {
+        return new SecureRandom().nextInt(percentsBound);
+    }
+
 
     public int divideAndCeil(int first, int second) {
         return (int) Math.ceil(first / (double) second);

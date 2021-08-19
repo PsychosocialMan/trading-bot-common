@@ -41,10 +41,16 @@ public abstract class AbstractPredictor implements Predictor {
         return predictCounter > properties.getSuccessfulPredictionCountCriteria();
     }
 
+    @Override
+    public void clear() {
+        statistic.clear();
+        predictCounter = 0;
+        lastPredictedValue = Optional.empty();
+    }
+
     protected boolean deviationCriteria(double avgValue, Stream<Integer> target) {
         return target
-                .allMatch(opponentBid -> opponentBid - avgValue < properties.getAccuracy());
-
+                .allMatch(opponentBid -> Math.abs(opponentBid - avgValue) <= properties.getAccuracy());
     }
 
     protected void checkPrediction() {

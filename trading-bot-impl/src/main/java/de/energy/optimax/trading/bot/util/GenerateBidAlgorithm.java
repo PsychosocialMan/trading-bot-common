@@ -29,7 +29,7 @@ public class GenerateBidAlgorithm {
                            int remainingQuantity,
                            int wonQuantity) {
         var quantityToDraw = initialQuantity / 2 - wonQuantity;
-        var opponentQuantityToDraw = initialQuantity / 2 - (initialQuantity - wonQuantity);
+        var opponentQuantityToDraw = initialQuantity / 2 - (initialQuantity - remainingQuantity - wonQuantity);
 
         // We won
         if (quantityToDraw < 0 && remainingQuantity + quantityToDraw <= 0) {
@@ -44,7 +44,24 @@ public class GenerateBidAlgorithm {
         if (remainingQuantity - quantityToDraw <= 0) {
             return approxUtil.divideAndCeil(remainingOpponentCash, opponentQuantityToDraw) + 1;
         } else {
-            var avgBid = generateAvgBid() + middleDelta();
+            var middleDelta = middleDelta();
+
+            var avgBid = generateAvgBid() - middleDelta / 2;
+
+            // If middle delta < 60% from average bid for round, add middle delta.
+            // Else
+            if (middleDelta < approxUtil.approx(initialQuantity, initialCash, 60) && middleDelta > 0) {
+                avgBid = generateAvgBid() + middleDelta;
+            } else if (middleDelta < 0) {
+                avgBid = generateAvgBid() - approxUtil.divideAndCeil(middleDelta * 60, 100);
+            } else if (middleDelta == 0) {
+                avgBid = generateAvgBid() + approxUtil.approx(
+                        initialQuantity,
+                        initialCash,
+                        approxUtil.getRandomApproxPercents(70)
+                );
+            }
+
             return remainingCash - avgBid >= 0 ? avgBid : remainingCash;
         }
 
