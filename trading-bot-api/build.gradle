@@ -1,0 +1,22 @@
+// API module for bidders.
+// You can implement these interfaces and use bidders in your auction.
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'de.energy.optimax'
+version '1.0.0-RC'
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

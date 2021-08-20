@@ -1,0 +1,4 @@
+rootProject.name = 'trading-bot-common'
+include 'trading-bot-api'
+include 'trading-bot-impl'
+

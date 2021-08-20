@@ -1,0 +1,13 @@
+// Common dependency for aggregation API and implementation.
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'de.energy.optimax'
+version '1.0.0-RC'
+
+repositories {
+    mavenCentral()
+}
