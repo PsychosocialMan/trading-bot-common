@@ -18,6 +18,8 @@ import javax.annotation.PreDestroy;
  * in application yaml anf bind them to <code>@ConfigurationProperties</code>.</p>
  *
  * @author Smirnov Kirill
+ * @see auction.Bidder
+ * @see de.energy.optimax.trading.bot.bidder.impl.SmartBidder
  */
 @Configuration
 @ComponentScan

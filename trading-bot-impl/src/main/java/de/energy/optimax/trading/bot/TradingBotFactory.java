@@ -12,6 +12,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * </p>
  *
  * @author Smirnov Kirill
+ * @see Bidder
+ * @see de.energy.optimax.trading.bot.bidder.impl.SmartBidder
  */
 public class TradingBotFactory {
     /**
