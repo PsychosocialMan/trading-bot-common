@@ -2,6 +2,7 @@
 
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group 'de.energy.optimax'

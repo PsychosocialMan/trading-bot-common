@@ -5,6 +5,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'jacoco'
+    id 'maven-publish'
 }
 
 group 'de.energy.optimax'
@@ -25,6 +26,15 @@ repositories {
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
+    }
+}
+
+// To publish artifacts
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
     }
 }
 
