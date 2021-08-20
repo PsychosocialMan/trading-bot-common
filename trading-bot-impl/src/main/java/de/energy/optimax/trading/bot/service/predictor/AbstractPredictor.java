@@ -12,20 +12,41 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * The type Abstract predictor.
+ * The type Abstract predictor. Implements all the methods except <code>predict()</code>. All the inherited classes are
+ * prototypes in case of variables conflict (if new Bidder implementation will use them).
  *
  * @author Smirnov Kirill
  */
 public abstract class AbstractPredictor implements Predictor {
 
+    /**
+     * The Logger.
+     */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
+    /**
+     * The Statistic of the auction.
+     */
     protected LinkedList<BidRound> statistic = new LinkedList<>();
+    /**
+     * The Properties.
+     */
     protected PredictorProperties properties = new PredictorProperties();
+    /**
+     * The Predict counter. How many times in a row predictor successfully did his job.
+     */
     protected Integer predictCounter = 0;
+    /**
+     * The Last predicted value.
+     */
     protected Optional<Integer> lastPredictedValue = Optional.empty();
 
+    /**
+     * Sets properties.
+     *
+     * @param properties the properties
+     */
     @Autowired
     public void setProperties(BidderProperties properties) {
         this.properties = properties.getPredictor();
@@ -48,11 +69,22 @@ public abstract class AbstractPredictor implements Predictor {
         lastPredictedValue = Optional.empty();
     }
 
+    /**
+     * Deviation criteria. Checks target by the deviation from avgValue.
+     *
+     * @param avgValue the average value
+     * @param target   the target
+     *
+     * @return is target stream is ok.
+     */
     protected boolean deviationCriteria(double avgValue, Stream<Integer> target) {
         return target
                 .allMatch(opponentBid -> Math.abs(opponentBid - avgValue) <= properties.getAccuracy());
     }
 
+    /**
+     * Check prediction. Increments counter of successful prediction.
+     */
     protected void checkPrediction() {
         if (lastPredictedValue.isPresent()) {
             if (lastPredictedValue.get() - statistic.getLast().getOpponentBid() < properties.getAccuracy()) {
@@ -63,10 +95,23 @@ public abstract class AbstractPredictor implements Predictor {
         }
     }
 
+    /**
+     * Check prediction analysis available. For example, if we set up property <code>bidder.predictor.minimal-values-for-analysis:
+     * 3</code>
+     * <p>
+     * Then only statistic with at least 3 elements will be analyzed.
+     *
+     * @return the boolean
+     */
     protected boolean checkPredictionAnalysis() {
         return statistic.size() >= properties.getMinimalValuesForAnalysis();
     }
 
+    /**
+     * Log prediction.
+     *
+     * @param prediction the prediction
+     */
     protected void logPrediction(Optional<Integer> prediction) {
         prediction.ifPresentOrElse(resultValue -> logger.debug("predict() - Predict is successful. Offered bid value: [{}]", resultValue),
                 () -> logger.debug("predict() - Predict is unsuccessful."));

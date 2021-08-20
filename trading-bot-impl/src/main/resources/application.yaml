@@ -1,7 +1,14 @@
 ---
-# Chose type of bidder for more efficiency
+# Bidder properties. Can be used for more prediction accuracy.
 bidder:
   predictor:
+    # If you need to predict values by patterns, you have to analyze previous bids.
+    # This property is used to specify minimal number of statistic that must be presented in auction.
     minimal-values-for-analysis: 3
+    # Predictors can guess the result and can make a mistake.
+    # This property is used to determine the number of predicted successively opponent's bids
+    # so that we listen to him
     successful-prediction-count-criteria: 2
+    # Accuracy for predictors.
+    # If the predicted value is in the vicinity of this delta, then the prediction is successful.
     accuracy: 1

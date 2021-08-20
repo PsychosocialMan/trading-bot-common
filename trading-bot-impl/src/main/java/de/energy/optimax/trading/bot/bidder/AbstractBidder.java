@@ -5,15 +5,39 @@ import de.energy.optimax.trading.bot.service.bidder.BidderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The type Abstract bidder. Abstract bidder contains logging, the simplest logic. All basic algorithms are delegated to
+ * the service layer. For inherited classes, it is enough to pass the service to the constructor.
+ *
+ * @author Smirnov Kirill
+ * @see BidderService
+ */
 public abstract class AbstractBidder implements Bidder {
 
+    /**
+     * The Logger.
+     */
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The Initial quantity (in QU).
+     */
     private int initialQuantity;
+    /**
+     * The Initial cash (in MU).
+     */
     private int initialCash;
 
+    /**
+     * The Bidder service. Main logic delegate.
+     */
     private final BidderService bidderService;
 
+    /**
+     * Instantiates a new Abstract bidder.
+     *
+     * @param bidderService the bidder service
+     */
     protected AbstractBidder(BidderService bidderService) {
         logger.info("AbstractBidder() - Creating bidder with service {}", bidderService.getClass());
 

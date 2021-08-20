@@ -114,9 +114,6 @@ public class SmartBidderServiceTest extends BaseTest {
                     wonQuantity
             );
 
-            // 2 cause of random percents
-            Assert.assertTrue(Math.abs(bid - expectedBid) <= 2);
-
             var otherBid = 5;
 
             remainingQuantity -= BidRound.QUANTITY_PER_ROUND;
